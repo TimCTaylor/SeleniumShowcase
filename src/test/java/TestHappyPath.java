@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -14,6 +16,11 @@ import utils.TestSession;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.Constants.LEGION_BASE_URL;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * The purpose of the tests in this class is to perform chains of interactions
@@ -50,18 +57,35 @@ public class TestHappyPath {
 
     @Test
     public void happyTour1() {
-        Actions actions = new Actions(driver); // We will reuse the same Actions instance a few times.
+        Actions actions = new Actions(driver); // We will reuse the same Actions instance a few times, so let's declare
+                                               // it here.
+
+        // Mini design template: find the div, then find the element within the div.
+        // This is a common pattern in Selenium tests and it's easy to miss the
+        // importance of what we're doing here.
+        // Rather than attempt to find a single element in the entire page, we're
+        // narrowing our search to a specific
+        // area of the page. This is a good practice because it makes the test more
+        // robust to changes in the page layout.
+        // The fact that the findElement method is implemented by the WebElement class
+        // as well as the WebDriver class
+        // is such a simple thing, but it's one of the things I like best about the
+        // Selenium class model.
+        // I haven't designed my page object model yet, but I can see myself making full
+        // use of this.
 
         // Scroll to the div with id "homebanner_TDogz"
         WebElement homeBannerDiv = driver.findElement(By.id("homebanner_TDogz"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", homeBannerDiv);
 
         // Click the first anchor found within the div. This should open the Time
-        // Dogz series page in the same window
+        // Dogz series page in the same window.
         WebElement firstAnchor = homeBannerDiv.findElement(By.tagName("a"));
         firstAnchor.click();
 
-        // Assert that the browser tab title begins "Time Dogz Series page"
+        testSession.pause(4); // implicit wait... should be tidied with an explicit one.
+
+        // Assert that the opened browser tab title begins "Time Dogz Series page"
         String expectedTDTitle = "Time Dogz Series page";
         String actualTDTitle = driver.getTitle();
         assertTrue(actualTDTitle.startsWith(expectedTDTitle),
@@ -79,6 +103,35 @@ public class TestHappyPath {
         String actualSloganText = h2SloganTag.getText();
         assertEquals(expectedSloganText, actualSloganText,
                 "The <h2> tag text should be 'The past is your playground.'");
+
+        testSession.pause(3); // implicit wait... should be tidied with an explicit one.
+
+        // Find the div element with id "tim_PastSucks_video"
+        WebElement videoDiv = driver.findElement(By.id("tim_PastSucks_video"));
+
+        // Find the button element with title "Play" within the div. Note that, once
+        // again, we're
+        // narrowing our search first and then calling findElement on the encompassing
+        // WebElement and not the WebDriver instance.
+        WebElement playButton = videoDiv.findElement(By.cssSelector("button[title='Play']"));
+        playButton.click();
+
+        testSession.pause(3); // implicit wait... should be tidied with an explicit one.
+
+        // Verify that the video is playing by checking the presence of a pause button.
+        // Obviously, this is entirely dependent on
+        // the way a 3rd party control has been implemented (the embedded YouTube video
+        // player). If the video player changes, this test will break.
+        WebElement pauseButton = videoDiv.findElement(By.cssSelector("button[title='Pause (k)']"));
+        assertTrue(pauseButton.isDisplayed(), "The pause button should be displayed, indicating the video is playing.");
+
+        // Take a screenshot of the current page
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(screenshot, new File("tim_vid_screenshot.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
