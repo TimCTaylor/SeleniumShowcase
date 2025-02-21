@@ -1,0 +1,81 @@
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import utils.TestSession;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Entry point for driving tests
+ *
+ *  In general, these are tests that verify our tests work correctly, rather than tests of the system under test.
+ *  In other words, these are unit tests of the test code itself.
+ *  Where this is the case, we tag them @Tag("TestSystemTest") so we can exclude them from a test run if we want.
+ *
+ */
+public class TestSystemUnitTests {
+
+    /**
+     *  This batch of tests verify that all versions of the Session object constructors work and can read the default
+     *  options from the command line.
+     */
+    @Test
+    @Tag("UnitTestTheTests")
+    public void verifySessionOptions_noParams() {
+        TestSession sessionObj = new TestSession();
+        sessionObj.pause(5); // we get socket exceptions if we move too fast, so wait a few seconds
+        sessionObj.sessionDriver.get("https://humanlegion.com");
+        assertTrue(sessionObj.sessionDriver.toString().startsWith("ChromeDriver"), "Test Session object should default to driver=CHROME");
+        assertFalse(sessionObj.forceErrors, "Test Session object should default to  force errors = FALSE");
+        sessionObj.closeTestSession();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @Tag("UnitTestTheTests")
+    public void verifySessionOptions_oneParams() {
+        TestSession sessionObj = new TestSession("EDGE");
+        sessionObj.pause(5); // we get socket exceptions if we move too fast, so wait a few seconds
+        sessionObj.sessionDriver.get("https://humanlegion.com");
+        System.out.println(sessionObj.sessionDriver);
+        System.out.println(sessionObj.forceErrors);
+        assertTrue(sessionObj.sessionDriver.toString().startsWith("EdgeDriver"), "Test Session object should accept constructor driver parameter");
+        assertFalse(sessionObj.forceErrors, "Test Session object should default to  force errors = FALSE");
+        sessionObj.closeTestSession();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @Tag("UnitTestTheTests")
+    public void verifySessionOptions_twoParams() {
+        TestSession sessionObj = new TestSession("EDGE", true);
+        sessionObj.pause(5); // we get socket exceptions if we move too fast, so wait a few seconds
+        assertTrue(sessionObj.sessionDriver.toString().startsWith("EdgeDriver"), "Test Session object should accept constructor driver parameter");
+        assertTrue(sessionObj.forceErrors, "Test Session object should accept constructor forcedError parameter");
+        sessionObj.closeTestSession();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @Tag("UnitTestTheTests")
+    public void verifySessionOptions_invalidFirstParam() {
+        // Assert that the constructor throws an IllegalArgumentException for an invalid WebDriver choice. Good ol' Compuserve... still helping us today.
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new TestSession("COMPUSERVE");
+        }, "Expected IllegalArgumentException to be thrown when loading 'COMPUSERVE' WebDriver, but it wasn't");
+
+
+    }
+
+}
