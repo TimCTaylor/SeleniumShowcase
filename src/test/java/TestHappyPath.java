@@ -108,22 +108,33 @@ public class TestHappyPath {
 
         // Find the div element with id "tim_PastSucks_video"
         WebElement videoDiv = driver.findElement(By.id("tim_PastSucks_video"));
+        actions.moveToElement(videoDiv).perform();
 
-        // Find the button element with title "Play" within the div. Note that, once
-        // again, we're
-        // narrowing our search first and then calling findElement on the encompassing
-        // WebElement and not the WebDriver instance.
-        WebElement playButton = videoDiv.findElement(By.cssSelector("button[title='Play']"));
+        // Switch to the first iframe inside the videoDiv (there is only one iframe)
+        WebElement videoIframe = videoDiv.findElement(By.tagName("iframe"));
+        driver.switchTo().frame(videoIframe);
+
+        // NOTE TO SELF: I had to call the findElement method on the driver instance
+        // here, because the videoIframe webelement is not avaiable inside the iFrame
+        // and doesn't work.
+        WebElement youTubeDiv = driver.findElement(By.id("movie_player"));
+
+        testSession.pause(2); // implicit wait... should be tidied with an explicit one.
+
+        // Find the button element within the embedded Youtube element (the tags change
+        // as we play and pause, but there is only ever one button)
+        WebElement playButton = youTubeDiv.findElement(By.cssSelector("button[title='Play']"));
         playButton.click();
-
         testSession.pause(3); // implicit wait... should be tidied with an explicit one.
 
-        // Verify that the video is playing by checking the presence of a pause button.
-        // Obviously, this is entirely dependent on
-        // the way a 3rd party control has been implemented (the embedded YouTube video
-        // player). If the video player changes, this test will break.
-        WebElement pauseButton = videoDiv.findElement(By.cssSelector("button[title='Pause (k)']"));
-        assertTrue(pauseButton.isDisplayed(), "The pause button should be displayed, indicating the video is playing.");
+        // YouTube video player is tricky because as we play it, the web elements within
+        // the player change. e.g main play button disappears
+        // and the bottom-left button changes from play to pause. This took me a while
+        // to reliably get things working,
+        // which only goes to show how brittle these tests can be when they depend upon
+        // 3rd party code.
+        WebElement pauseButton = youTubeDiv.findElement(By.cssSelector("button[class='ytp-play-button ytp-button']"));
+        pauseButton.click(); // Pause the video
 
         // Take a screenshot of the current page
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -132,6 +143,8 @@ public class TestHappyPath {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        driver.switchTo().defaultContent(); // Switch out of the iFrame and back to the main page
     }
 
     /**
