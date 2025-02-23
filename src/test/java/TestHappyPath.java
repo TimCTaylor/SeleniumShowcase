@@ -10,15 +10,25 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utils.TestSession;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.Constants.LEGION_BASE_URL;
+import static utils.Constants.SCREENSHOT_FOLDER;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
@@ -59,6 +69,8 @@ public class TestHappyPath {
     public void happyTour1() {
         Actions actions = new Actions(driver); // We will reuse the same Actions instance a few times, so let's declare
                                                // it here.
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit waits
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2)); // For briefer waits
 
         // Mini design template: find the div, then find the element within the div.
         // This is a common pattern in Selenium tests and it's easy to miss the
@@ -108,7 +120,6 @@ public class TestHappyPath {
 
         // Find the div element with id "tim_PastSucks_video"
         WebElement videoDiv = driver.findElement(By.id("tim_PastSucks_video"));
-        actions.moveToElement(videoDiv).perform();
 
         // Switch to the first iframe inside the videoDiv (there is only one iframe)
         WebElement videoIframe = videoDiv.findElement(By.tagName("iframe"));
@@ -116,10 +127,12 @@ public class TestHappyPath {
 
         // NOTE TO SELF: I had to call the findElement method on the driver instance
         // here, because the videoIframe webelement is not avaiable inside the iFrame
-        // and doesn't work.
-        WebElement youTubeDiv = driver.findElement(By.id("movie_player"));
-
-        testSession.pause(2); // implicit wait... should be tidied with an explicit one.
+        // and doesn't work. I've wrapped it in an explicit wait.
+        // WebElement youTubeDiv = driver.findElement(By.id("movie_player"));
+        // EXAMPLE OF GOOD CODE PATTERN: The WebDriverWait.until() method returns a
+        // webelement. So instead of doing the
+        // wait and then finding the element, I combine the two into a single action.
+        WebElement youTubeDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("movie_player")));
 
         // Find the button element within the embedded Youtube element (the tags change
         // as we play and pause, but there is only ever one button)
@@ -137,9 +150,30 @@ public class TestHappyPath {
         pauseButton.click(); // Pause the video
 
         // Take a screenshot of the current page
+        // To reduce file size, I had to hunt around Stack Overflow until I could find a
+        // way to resize the image.
+        // It worked (I achieved an 85% reduction in file size from the original .png
+        // output), however...
+        // The code rapidly got pretty complex, and I'm not familiar with these image
+        // manipulation libraries. All of
+        // which makes this a good candidate for abstraction into a utility class on the
+        // next pass.
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            FileUtils.copyFile(screenshot, new File("tim_vid_screenshot.png"));
+            BufferedImage bufferedImage = ImageIO.read(screenshot);
+            BufferedImage resizedImage = new BufferedImage(800, 600, bufferedImage.getType());
+            Graphics2D g = resizedImage.createGraphics();
+            g.drawImage(bufferedImage, 0, 0, 800, 600, null);
+            g.dispose();
+
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String filename = SCREENSHOT_FOLDER + "tim_vid_screenshot_" + timestamp + ".jpg";
+            File screenshotFolder = new File(SCREENSHOT_FOLDER); // Create the folder (the any parent path to it) if it
+                                                                 // doesn't exist
+            if (!screenshotFolder.exists()) {
+                screenshotFolder.mkdirs();
+            }
+            ImageIO.write(resizedImage, "jpg", new File(filename));
         } catch (IOException e) {
             e.printStackTrace();
         }
