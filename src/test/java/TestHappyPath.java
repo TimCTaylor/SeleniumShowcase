@@ -95,7 +95,7 @@ public class TestHappyPath {
         WebElement firstAnchor = homeBannerDiv.findElement(By.tagName("a"));
         firstAnchor.click();
 
-        testSession.pause(4); // implicit wait... should be tidied with an explicit one.
+        testSession.implicitWait(4); // implicit wait... should be tidied with an explicit one.
 
         // Assert that the opened browser tab title begins "Time Dogz Series page"
         String expectedTDTitle = "Time Dogz Series page";
@@ -116,7 +116,7 @@ public class TestHappyPath {
         assertEquals(expectedSloganText, actualSloganText,
                 "The <h2> tag text should be 'The past is your playground.'");
 
-        testSession.pause(3); // implicit wait... should be tidied with an explicit one.
+        testSession.implicitWait(3); // implicit wait... should be tidied with an explicit one.
 
         // Find the div element with id "tim_PastSucks_video"
         WebElement videoDiv = driver.findElement(By.id("tim_PastSucks_video"));
@@ -138,7 +138,7 @@ public class TestHappyPath {
         // as we play and pause, but there is only ever one button)
         WebElement playButton = youTubeDiv.findElement(By.cssSelector("button[title='Play']"));
         playButton.click();
-        testSession.pause(3); // implicit wait... should be tidied with an explicit one.
+        testSession.implicitWait(3); // implicit wait... should be tidied with an explicit one.
 
         // YouTube video player is tricky because as we play it, the web elements within
         // the player change. e.g main play button disappears
@@ -161,9 +161,13 @@ public class TestHappyPath {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
             BufferedImage bufferedImage = ImageIO.read(screenshot);
-            BufferedImage resizedImage = new BufferedImage(800, 600, bufferedImage.getType());
+            int originalWidth = bufferedImage.getWidth();
+            int originalHeight = bufferedImage.getHeight();
+            int targetWidth = 800;
+            int targetHeight = (originalHeight * targetWidth) / originalWidth;
+            BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, bufferedImage.getType());
             Graphics2D g = resizedImage.createGraphics();
-            g.drawImage(bufferedImage, 0, 0, 800, 600, null);
+            g.drawImage(bufferedImage, 0, 0, targetWidth, targetHeight, null);
             g.dispose();
 
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

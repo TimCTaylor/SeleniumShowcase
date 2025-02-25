@@ -1,58 +1,19 @@
 
-/**
- * In the DemonstrateObjectModelxx sequence of classes, I'll demonstrate a typical flow of a Selenium test automation
- * project as we first write a simple coded solution for a suite of test cases.
- *
- * Then I will refactor that first solution, introducing an element abstraction layer and page object model.
- *
- * The system under test is my own Human Legion website, which I use to communicate with fans of my book series. A
- * crucial part of this are buy links to various online retailers across the world, most importantly Amazon's regional
- * stores. By the time I have my abstraction object layers designed, I intend to run critical automation tests to verify
- * Amazon sales links on books that I haven't even thought of yet, let alone published. I can't think of a better
- * practical demonstration of the benefits of a page object model and other abstraction layer design.
- *
- *
- * As I write this note, I don't yet have anything more than an initial sketch for what those abstraction layers will
- * look like. I'm very comfortable with that. I don't need to. I do have some goals for the abstraction layers though.
- * They will:
- * - separate the intent of the tests from the implementation of the tests. No matter what we do, we cannot decouple our
- *   test automation from the implementation of the system under test, which will always mean a level of brittleness to
- *   out tests. By separating out the implementation of our tests, if our tests break because the system under test has
- *   changed its implementation, we might be able to restrict our fixes to the test implementation (e.g. to our code that
- *   defines our page object model), leaving the test classes themselves unchanged. (I say 'might' because if the SUT
- *   changes fundmentally then we might need to change the intent of our tests as well as their implementation.
- *
- *
- *   - not contain assertions, which are restricted to the test classes. This supports the previous point. We need to
- *     design our JUnit tests so that if they fail because  the page object model has broken then this is made very clear
- *     in terms of error messaging.
- */
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import utils.TestSession;
+import element.classes.YouTubeVideo;
+import utils.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
-
-import javax.imageio.ImageIO;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.Constants.LEGION_BASE_URL;
-import static utils.Constants.SCREENSHOT_FOLDER;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-
-public class DemonstrateObjectModel01 {
+public class DemonstrateObjectModel02 {
 
         private static TestSession testSession;
         private static WebDriver driver; // Point to the driver directly to make the code simpler to read
@@ -69,19 +30,11 @@ public class DemonstrateObjectModel01 {
         }
 
         @Test
-        public void happyTour1() {
-                // todo have things here that I mark: 'to be abstracted with abstract page
-                // object'
-                // todo and other things that are 'to be abstracted with page specific models'
-                // so we will have checks for page foot copyright etc as our abstract page
-                // object. And clicking the
-                // youtube video on the TD page as a page specific (ie a class derrived from the
-                // HumanLegionPageObject class
+        public void happyTour2() {
 
                 // Declare some common variables we'll use for multiple actions and assertions.
                 Actions actions = new Actions(driver); // We will reuse the same Actions instance a few times, so let's
-                                                       // declare
-                                                       // it here.
+                                                       // declare it here.
                 WebElement homeBannerDiv; // Element for each banner div
                 WebElement firstAnchor; // First anchor found within a parent element
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit
@@ -131,7 +84,9 @@ public class DemonstrateObjectModel01 {
                 // When we click on a tab, the other tabs are hidden and we can check this by
                 // looking at the aria-hidden property.
                 System.out.println(sectionTab2.getText());
-
+                // NEXT HACK
+                // Let's assume that we can find the sections ok. It's a problem with
+                // getDomProperty. conclusion: IT IS!
                 assertEquals("false", sectionTab2.getDomAttribute("aria-hidden"),
                                 "The 'Try the audio' Marine Cadet tab should be selected.");
 
@@ -201,78 +156,62 @@ public class DemonstrateObjectModel01 {
                 assertEquals(expectedSloganText, actualSloganText,
                                 "The <h2> tag text should be 'The past is your playground.'");
 
-                testSession.implicitWait(3); // implicit wait... should be tidied with an explicit one.
+                testSession.implicitWait(0); // turn it off so we don't mix implicit and explicit waits
+
+                /**
+                 * Test the embedded YouTube video player
+                 * In this second pass, we have abstracted the player into a class called
+                 * YouTubeVideo.
+                 */
+                testSession.setBrowserToDebugSize(); // Set the browser window to a size that's good for debugging/
+                                                     // This allows us to see the browser and the IDE at the same time.
 
                 // Find the div element with id "tim_PastSucks_video"
-                WebElement videoDiv = driver.findElement(By.id("tim_PastSucks_video"));
+                WebElement videoDiv = wait
+                                .until(ExpectedConditions.presenceOfElementLocated(By.id("tim_PastSucks_video")));
                 actions.moveToElement(videoDiv).perform();
 
-                // Switch to the first iframe inside the videoDiv (there is only one iframe)
+                // Switch to the first iframe inside the videoDiv (there is only one iframe) and
+                // use an instance of our abstracted YouTubeVideo class to interract with it
                 WebElement videoIframe = videoDiv.findElement(By.tagName("iframe"));
                 driver.switchTo().frame(videoIframe);
+                YouTubeVideo pastSucksVideo = new YouTubeVideo(videoIframe, driver);
+                assertTrue(pastSucksVideo.waitToLoad(), "Timed out waiting for the Past Sucks video to load.");
+                assertTrue(pastSucksVideo.playBigRed(), "Could not play video."); // Hit the big red play button
+                testSession.sleep(4);
+                pastSucksVideo.togglePlayButton(); // pause play
+                CaptureScreenshot.captureScreenshot(driver, "happyTour2", "tim_vid_screenshot_1");
+                testSession.sleep(4);
+                ; // If we have successfully paused, the video will not change and so the
+                  // next
+                  // screenshot should be the same as the last. We should see both have a
+                  // 'video
+                  // paused' two vertical bars at bottom left
+                CaptureScreenshot.captureScreenshot(driver, "happyTour2", "tim_vid_screenshot_2");
+                pastSucksVideo.togglePlayButton(); // restart the video
+                testSession.sleep(4); // Move further into the video
 
-                // NOTE TO SELF: I had to call the findElement method on the driver instance
-                // here, because the videoIframe webelement is not avaiable inside the iFrame
-                // and doesn't work.
-                // EXAMPLE OF GOOD CODE PATTERN: The WebDriverWait.until() method returns a
-                // WebElement. So instead of doing the wait and then finding the element as two
-                // separate method calls, I combine the two into a single action.
-                WebElement youTubeDiv = wait
-                                .until(ExpectedConditions.visibilityOfElementLocated(By.id("movie_player")));
+                assertTrue(pastSucksVideo.toggleMute(), "Failed to toggle mute button.");
+                CaptureScreenshot.captureScreenshot(driver, "happyTour2", "tim_vid_screenshot_3"); // should be
+                                                                                                   // at a different
+                                                                                                   // point from the
+                                                                                                   // first two videos
+                                                                                                   // and it should show
+                                                                                                   // muted and the
+                                                                                                   // 'video paused'
+                                                                                                   // bars should
+                                                                                                   // have changed to a
+                                                                                                   // trianle (play)
+                                                                                                   // symbol.
 
-                // Find the button element within the embedded Youtube element (the tags change
-                // as we play and pause, but there is only ever one button)
-                WebElement playButton = youTubeDiv.findElement(By.cssSelector("button[title='Play']"));
-                playButton.click();
-                testSession.implicitWait(3); // implicit wait... should be tidied with an explicit one.
-
-                // YouTube video player is tricky because as we play it, the web elements within
-                // the player change. e.g main play button disappears
-                // and the bottom-left button changes from play to pause. This took me a while
-                // to reliably get things working,
-                // which only goes to show how brittle these tests can be when they depend upon
-                // 3rd party code.
-                WebElement pauseButton = youTubeDiv
-                                .findElement(By.cssSelector("button[class='ytp-play-button ytp-button']"));
-                pauseButton.click(); // Pause the video
-
-                // Take a screenshot of the current page
-                // To reduce file size, I had to hunt around Stack Overflow until I could find a
-                // way to resize the image.
-                // It worked (I achieved an 85% reduction in file size from the original .png
-                // output), however...
-                // The code rapidly got pretty complex, and I'm not familiar with these image
-                // manipulation libraries. All of
-                // which makes this a good candidate for abstraction into a utility class on the
-                // next pass.
-                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                try {
-                        BufferedImage bufferedImage = ImageIO.read(screenshot);
-                        int originalWidth = bufferedImage.getWidth();
-                        int originalHeight = bufferedImage.getHeight();
-                        int targetWidth = 800;
-                        int targetHeight = (originalHeight * targetWidth) / originalWidth; // a bit of a faff here, but
-                                                                                           // I'm trying to keep the
-                                                                                           // aspect ratio
-                        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight,
-                                        bufferedImage.getType());
-                        Graphics2D g = resizedImage.createGraphics();
-                        g.drawImage(bufferedImage, 0, 0, targetWidth, targetHeight, null);
-                        g.dispose();
-
-                        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                        String filename = SCREENSHOT_FOLDER + "tim_vid_screenshot_" + timestamp + ".jpg";
-                        File screenshotFolder = new File(SCREENSHOT_FOLDER); // Create the folder (the any parent path
-                                                                             // to it) if it
-                                                                             // doesn't exist
-                        if (!screenshotFolder.exists()) {
-                                screenshotFolder.mkdirs();
-                        }
-                        ImageIO.write(resizedImage, "jpg", new File(filename));
-                } catch (IOException e) {
-                        e.printStackTrace();
+                // From this point, most of the video methods are just stubs, but they
+                // illustrate some of the things we could implement if they were useful
+                if (pastSucksVideo.isPlaying()) {
+                        pastSucksVideo.togglePlayButton(); // show how to make it pause
                 }
-
+                assertTrue(pastSucksVideo.maximise(), "Failed to maximise embedded video player.");
+                assertTrue(pastSucksVideo.playOnYouTube(), "Failed to open video in YouTube");
+                testSession.setBrowserToFullScreen();
                 driver.switchTo().defaultContent(); // Switch out of the iFrame and back to the main page
 
                 // My original intention was to click on all the book series banners and carry
