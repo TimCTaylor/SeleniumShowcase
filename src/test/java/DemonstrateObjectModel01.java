@@ -27,7 +27,7 @@
  *     design our JUnit tests so that if they fail because  the page object model has broken then this is made very clear
  *     in terms of error messaging.
  */
-import org.apache.commons.io.FileUtils;
+
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -224,7 +224,7 @@ public class DemonstrateObjectModel01 {
                 // as we play and pause, but there is only ever one button)
                 WebElement playButton = youTubeDiv.findElement(By.cssSelector("button[title='Play']"));
                 playButton.click();
-                testSession.implicitWait(3); // implicit wait... should be tidied with an explicit one.
+                testSession.implicitWait(3); // implicit wait... better to tidy this with an explicit one.
 
                 // YouTube video player is tricky because as we play it, the web elements within
                 // the player change. e.g main play button disappears

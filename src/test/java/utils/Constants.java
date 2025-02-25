@@ -6,6 +6,6 @@ public class Constants {
     public static final int BROWSER_DEBUG_HEIGHT = 550;
     public static final int BROWSER_DEBUG_WIDTH = 1625;
 
-    public static final String LEGION_BASE_URL = "https://humanlegion.com";
+    public static final String LEGION_BASE_URL = "https://humanlegion.com/";
     public static final String SCREENSHOT_FOLDER = ".\\screenshots\\";
 }

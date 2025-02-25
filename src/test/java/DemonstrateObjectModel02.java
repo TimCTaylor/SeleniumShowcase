@@ -1,10 +1,31 @@
 
+/**
+ * In the DemonstrateObjectModelxx sequence of classes, I'll demonstrate a typical flow of a Selenium test automation
+ * project as we first write a simple coded solution for a suite of test cases.
+ *
+ * Then I will refactor that first solution, introducing an element abstraction layer and page object model.
+ * 
+ * Here are some highlights of the second pass:
+ * - I have started the element abstraction layer, creating classes for the YouTube video player and the homepage banner.
+ * - I have taken out most of the implicit waits, to be replaced by explicit waits.
+ * - I have refactored the screenshot functionality into its own class in the utils package.
+ * 
+ * -- To do in the next pass.
+ * - The tests here are in a big long lump. I will divide them up into separate test methods.
+ * - I will introduce the page object model
+ * 
+ * -- To do in a later pass
+ * - Abstract the tab sections. These are very important tests (genuiunely important to me to run for real) and the code is
+ *   both repetitive and complex. I think this will clearly show the interaction between the page object model and the element abstraction layer.
+ **/
+
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import element.classes.HomePageBanner;
 import element.classes.YouTubeVideo;
 import utils.*;
 
@@ -17,6 +38,8 @@ public class DemonstrateObjectModel02 {
 
         private static TestSession testSession;
         private static WebDriver driver; // Point to the driver directly to make the code simpler to read
+
+        private static final String BANNER_IMAGE_LEGION = "marinenovice-art-final_faded02_comp.jpg";
 
         @BeforeAll
         public static void testSetup() {
@@ -35,16 +58,43 @@ public class DemonstrateObjectModel02 {
                 // Declare some common variables we'll use for multiple actions and assertions.
                 Actions actions = new Actions(driver); // We will reuse the same Actions instance a few times, so let's
                                                        // declare it here.
-                WebElement homeBannerDiv; // Element for each banner div
+                WebElement homeBannerDiv; // Element for each banner div -- to be abstracted out into the new
+                                          // HomePageBanner
                 WebElement firstAnchor; // First anchor found within a parent element
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit
                                                                                        // waits
                 WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2)); // For briefer waits
+                HomePageBanner homePageBanner; // The new HomePageBanner class
+
+                /// LET's redo the first banner test using the new HomePageBanner class
+                homePageBanner = new HomePageBanner(driver, "homebanner_Legion");
+
+                assertEquals(BANNER_IMAGE_LEGION, homePageBanner.getBannerImageName(),
+                                "The banner image name should be " + BANNER_IMAGE_LEGION + ".");
+                assertTrue(homePageBanner.onHomePage(), "Expected window to be on homepage and was not.");
+                assertTrue(homePageBanner.scrollToBanner(), "Failed to scroll to the Legion banner.");
+                assertTrue(homePageBanner.clickBanner(),
+                                "Failed to click the Legion banner and open up Legion series window.");
+                assertTrue(homePageBanner.onTargetPage(), "Expected window to be on Legion book series and was not.");
+
+                // == Insert logic to test the target page here. I'll come back to it. ==
+                // There are seven banners to check for seven book series, each with specifics
+                // to test on the series pages.
+                // The point of the object abstraction layer is that it makes the banner
+                // manipulation simple and easily repeated.
+                // That leave us able to concentrate our attention on writing the specific tests
+                // for each series page.
+
+                // Let's go back to the homepage
+                assertTrue(homePageBanner.closeTargetWindow(), "Failed to return to the homepage.");
+                assertTrue(homePageBanner.onHomePage(), "Expected window to be on homepage and was not.");
+
+                System.out.println("First banner test passed.");
 
                 // LEGION BOOK SERIES BANNER TESTS
-                // -- In later iterations, we will abstract the banner elements and then
-                // abstract the pages they link to.
-                // -- But for now, we will simply write all the tests out in a big long list.
+                // -- There's repetition with the HomePageBanner class test we've just executed.
+                // Not a problem. I will
+                // merge them all together in the next pass.
 
                 // Scroll to the div for the Legion series banner
                 homeBannerDiv = driver.findElement(By.id("homebanner_Legion"));
