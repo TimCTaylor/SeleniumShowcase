@@ -17,35 +17,17 @@ package element.classes;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import utils.TestSession;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
-
-import javax.imageio.ImageIO;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.Constants.LEGION_BASE_URL;
-import static utils.Constants.SCREENSHOT_FOLDER;
-
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
 
 public class HomePageBanner {
     WebElement bannerDiv; // The div that wraps the banner elements
     WebDriver driver;
-    String homePageHandle, targetPageHandle; // The handles of the homepage window and the target after clicking the
-                                             // banner
+    String homePageHandle, targetPageHandle; // The handles of the homepage window and the target after clicking the banner
 
     // Constructor
     // @bannerID - the ID of the div created by BeBuilder to wrap the banner
@@ -79,7 +61,7 @@ public class HomePageBanner {
             bannerDiv.findElement(By.tagName("a")).click();
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.not(ExpectedConditions.urlToBe(LEGION_BASE_URL))); // wait for the new
-                                                                                                 // page to load
+                                                                                                                                                  // page to load
             targetPageHandle = driver.getWindowHandle();
             retVal = true;
         }

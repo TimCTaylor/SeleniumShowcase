@@ -27,10 +27,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import element.classes.HomePageBanner;
 import element.classes.YouTubeVideo;
+import element.classes.booktab.AmazonSalesLinks;
+import element.classes.booktab.BookTab;
 import utils.*;
 
 import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.Constants.LEGION_BASE_URL;
 
@@ -272,6 +275,63 @@ public class DemonstrateObjectModel02 {
                 // elements that were repeated and/ or
                 // tricky to work with (book sections, youtube video, etc). And also to design a
                 // first set of page-specific classes.
+        }
+
+        @Test
+        public void sandboxBookTabClass() {
+                Actions actions = new Actions(driver);
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                HomePageBanner homePageBanner = new HomePageBanner(driver, "homebanner_Legion");
+                assertTrue(homePageBanner.scrollToBanner(), "Failed to scroll to the Legion banner.");
+                assertTrue(homePageBanner.clickBanner(),
+                                "Failed to click the Legion banner and open up Legion series window.");
+                assertTrue(homePageBanner.onTargetPage(), "Expected window to be on Legion book series and was not.");
+
+                // Indigo Squad is the second book on the Human Legion series page. Let's load up its tabsection and play with it.
+                BookTab IndigoSquadTab = new BookTab("IndigoSquad", driver);
+                System.out.println("Indigo Squad tab created.");
+                assertTrue(IndigoSquadTab.selectTabByText("Try the audio"),
+                                "Failed to select the 'Try the audio' tab.");
+
+                int currentIndex = IndigoSquadTab.getSelectedTabIndex();
+                System.out.println(("Current index: " + currentIndex));
+                System.out.println(
+                                "Current tab text: " + IndigoSquadTab.tabHeaders.get(currentIndex).getTabPanelText());
+                System.out.println();
+
+                assertTrue(IndigoSquadTab.selectTabByText("Special offers"),
+                                "Failed to select the 'Special offers' tab.");
+                currentIndex = IndigoSquadTab.getSelectedTabIndex();
+                System.out.println(("Current index: " + currentIndex));
+                System.out.println(
+                                "Current tab text: " + IndigoSquadTab.tabHeaders.get(currentIndex).getTabPanelText());
+                System.out.println();
+
+                assertFalse(IndigoSquadTab.selectTabByText("xxx"), "Should not be able to select the 'xxx' tab.");
+                currentIndex = IndigoSquadTab.getSelectedTabIndex();
+                System.out.println(("Current index: " + currentIndex));
+                System.out.println(
+                                "Current tab text: " + IndigoSquadTab.tabHeaders.get(currentIndex).getTabPanelText());
+                System.out.println();
+
+                assertTrue(IndigoSquadTab.selectTabByText("Links"),
+                                "Failed to select the 'Links' tab.");
+                currentIndex = IndigoSquadTab.getSelectedTabIndex();
+
+                AmazonSalesLinks IndigoSquadLinks = new AmazonSalesLinks(driver,
+                                IndigoSquadTab.tabHeaders.get(currentIndex).getTabPanel(),
+                                "Indigo Squad");
+                System.out.println("Number of sales links on the Indigo Squad links tab: "
+                                + IndigoSquadLinks.getNumLinks());
+                IndigoSquadLinks.verifyLinks();
+                System.out.println(("Current index: " + currentIndex));
+                System.out.println(
+                                "Current tab text: " + IndigoSquadTab.tabHeaders.get(currentIndex).getTabPanelText());
+
+                System.out.println("list of links on this panel: " + "implement a get links string return method here");
+                System.out.println();
+                System.out.println("Pause here.");
+
         }
 
         /**
