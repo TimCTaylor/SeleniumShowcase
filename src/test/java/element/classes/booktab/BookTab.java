@@ -23,7 +23,7 @@ public class BookTab {
     WebDriver driver; // passed via constructor
 
     public ArrayList<TabHeader> tabHeaders; // The list of tab headers for the book tab. 
-    private int selectedTab; // The currently selected tab.
+    private int selectedTab; // Index of the currently selected tab.
 
     WebDriverWait wait;
     Actions actions;
@@ -55,8 +55,20 @@ public class BookTab {
         }
     }
 
+    public String getSelectedTab() {
+        return tabHeaders.get(selectedTab).getTabText();
+    }
+
+    public String getSelectedTabPanelText() {
+        return tabHeaders.get(selectedTab).getTabPanelText();
+    }
+
     public int getSelectedTabIndex() {
         return selectedTab;
+    }
+
+    public int getNumTabs() {
+        return tabHeaders.size();
     }
 
     // Click on the tab header specified by the parameter @tabText. Returns true if the tab is found and clicked, false otherwise.

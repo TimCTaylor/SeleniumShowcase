@@ -24,9 +24,9 @@ public class TestSession {
                                 // some tests will deliberately be set to fail assertions.
                                 // This allows us to test our test reporting without needing to touch the tests
                                 // (or understand anything about their implementation)
-    // [Implement later] public String loggingMode; // session-wide variable that
-    // can be set from the command line - for logging and diagnostic info. Consider
-    // refactoring into an enum
+                                // [Implement later] public String loggingMode; // session-wide variable that
+                                // can be set from the command line - for logging and diagnostic info. Consider
+                                // refactoring into an enum
 
     /**
      * TestSession constructors.
@@ -100,7 +100,7 @@ public class TestSession {
     // force a delay rather than a synchronisation wait. I used this, for example,
     // to ensure that an
     // embedded video plays for a certain duration
-    public void sleep(int sleepTime) { // sleepTime is in seconds
+    public static void sleep(int sleepTime) { // sleepTime is in seconds
         try {
             Thread.sleep(sleepTime * 1000);
         } catch (InterruptedException e) {

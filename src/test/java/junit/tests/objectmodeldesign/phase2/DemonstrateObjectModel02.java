@@ -1,3 +1,4 @@
+package junit.tests.objectmodeldesign.phase2;
 
 /**
  * In the DemonstrateObjectModelxx sequence of classes, I'll demonstrate a typical flow of a Selenium test automation
@@ -309,11 +310,16 @@ public class DemonstrateObjectModel02 {
 
                 assertFalse(IndigoSquadTab.selectTabByText("xxx"), "Should not be able to select the 'xxx' tab.");
                 currentIndex = IndigoSquadTab.getSelectedTabIndex();
+                System.out.println("tab contents checked by calling the array elements...");
                 System.out.println(("Current index: " + currentIndex));
                 System.out.println(
                                 "Current tab text: " + IndigoSquadTab.tabHeaders.get(currentIndex).getTabPanelText());
                 System.out.println();
-
+                System.out.println("tab contents checked by calling the BookTab methods...");
+                System.out.println(("Current index & tab name: " + IndigoSquadTab.getSelectedTabIndex() + " | "
+                                + IndigoSquadTab.getSelectedTab()));
+                System.out.println("Current tab text: " + IndigoSquadTab.getSelectedTabPanelText());
+                System.out.println();
                 assertTrue(IndigoSquadTab.selectTabByText("Links"),
                                 "Failed to select the 'Links' tab.");
                 currentIndex = IndigoSquadTab.getSelectedTabIndex();
@@ -341,13 +347,21 @@ public class DemonstrateObjectModel02 {
          * demonstrating the difference between
          *
          * @AfterEach and @AfterAll, and also between WebDriver.close() which closes the
-         *            currently focused window
-         *            but keeps the WebDriver session active and quit() that shuts down
+         *            currently focused window but keeps the WebDriver session active and quit() that shuts down
          *            the entire session.
+         *            The code checks for the number of window handles left and does not close the final window
+         *            (which would have a similar effect to driver.quit() and cause a noSuchSessionID exception if another
+         *             test ran. )  
          */
         @AfterEach
         public void closeLastPage() {
-                driver.close();
+                for (String handle : driver.getWindowHandles()) {
+                        driver.switchTo().window(handle);
+                        if (driver.getWindowHandles().size() > 1) {
+                                driver.close();
+                        }
+                }
+
         }
 
         @AfterAll

@@ -1,3 +1,4 @@
+package junit.tests.objectmodeldesign.phase1;
 
 /**
  * In the DemonstrateObjectModelxx sequence of classes, I'll demonstrate a typical flow of a Selenium test automation
