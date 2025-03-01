@@ -229,8 +229,9 @@ public class DemonstrateObjectModel02 {
                 // use an instance of our abstracted YouTubeVideo class to interract with it
                 WebElement videoIframe = videoDiv.findElement(By.tagName("iframe"));
                 driver.switchTo().frame(videoIframe);
-                YouTubeVideo pastSucksVideo = new YouTubeVideo(videoIframe, driver);
+                YouTubeVideo pastSucksVideo = new YouTubeVideo(driver);
                 assertTrue(pastSucksVideo.waitToLoad(), "Timed out waiting for the Past Sucks video to load.");
+
                 assertTrue(pastSucksVideo.playBigRed(), "Could not play video."); // Hit the big red play button
                 testSession.sleep(4);
                 pastSucksVideo.togglePlayButton(); // pause play

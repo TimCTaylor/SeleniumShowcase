@@ -7,6 +7,8 @@ public class Constants {
     public static final int BROWSER_DEBUG_WIDTH = 1625;
 
     public static final String COPYRIGHT_STATEMENT = "(c) Human Legion Publications 2025. All rights reserved.";
-    public static final String LEGION_BASE_URL = "https://humanlegion.com/";
     public static final String SCREENSHOT_FOLDER = ".\\screenshots\\";
+
+    public static final String LEGION_BASE_URL = "https://humanlegion.com/";
+    public static final String TIMEDOGZ_SERIES_URL = "https://humanlegion.com/books/timedogz/";
 }

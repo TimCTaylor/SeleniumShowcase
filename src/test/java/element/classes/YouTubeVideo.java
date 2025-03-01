@@ -52,7 +52,8 @@ public class YouTubeVideo {
 
     // movieIFrame parameter is the iFrame the movie player sits inside. We assume
     // the elements inside the movie player are the same for all instances
-    public YouTubeVideo(WebElement movieIFrame, WebDriver driver) {
+    // public YouTubeVideo(WebElement movieIFrame, WebDriver driver) {
+    public YouTubeVideo(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_WAIT_TIMEOUT));
         action = new Actions(driver);

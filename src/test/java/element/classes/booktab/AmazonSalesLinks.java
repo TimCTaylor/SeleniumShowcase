@@ -53,10 +53,12 @@ public class AmazonSalesLinks {
             System.out.println("Attempting to follow link: " + link.getText() + " | " + link.getDomAttribute("href")
                     + " | " + target);
             link.click();
+            windowHandles = driver.getWindowHandles().toArray(); // for switching between tabs. A bit wasteful as we might not need it, but the code won't compile unless we initialise it.
 
             // if we opened a new tab, we have to switch to it. Selenium will open the new tab, but will not switch to it unless we tell it to.
-            windowHandles = driver.getWindowHandles().toArray();
-            driver.switchTo().window((String) windowHandles[1]);
+            if ("_blank".equals(target)) {
+                driver.switchTo().window((String) windowHandles[1]);
+            }
 
             wait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(startingURL)));
 
