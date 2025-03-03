@@ -23,6 +23,8 @@ import utils.VerifyLink;
 
 import java.util.List;
 
+import static utils.Constants.AVOID_OPENING_AMAZON_LINKS;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -223,7 +225,8 @@ public class TimeDogzSeriesPage extends HumanLegionPage {
         boolean retVal = false;
         WebElement bookSection = moveToBookSection(bookNumber);
         if (bookSection != null) {
-            WebElement button = bookSection.findElement(By.className("button.button_right.button_theme.button_size_2"));
+            WebElement button = bookSection
+                    .findElement(By.cssSelector(".button.button_right.button_theme.button_size_2"));
             if (button != null) {
                 String expectedASIN; // ASIN is the Amazon Standard Identification Number (product number) and will be part of the url for storefront page.
                 switch (bookNumber) {
@@ -240,7 +243,9 @@ public class TimeDogzSeriesPage extends HumanLegionPage {
                         expectedASIN = "xxxInvalidBookNumberxxx";
                 }
                 retVal = true;
-                //                retVal = VerifyLink.verifyLink(driver, button, expectedASIN); // this code works, but I would rather not open up the link repeatedly in case Amazon shuts me down for suspicious behaviour
+                if (!AVOID_OPENING_AMAZON_LINKS) {
+                    retVal = VerifyLink.verifyLink(driver, button, expectedASIN); // this code works, but I would rather not open up the link repeatedly in case Amazon shuts me down for suspicious behaviour
+                }
             }
         }
         return retVal;

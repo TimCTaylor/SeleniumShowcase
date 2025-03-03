@@ -65,9 +65,7 @@ public class DemonstrateObjectModel02 {
                 WebElement homeBannerDiv; // Element for each banner div -- to be abstracted out into the new
                                           // HomePageBanner
                 WebElement firstAnchor; // First anchor found within a parent element
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit
-                                                                                       // waits
-                WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2)); // For briefer waits
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit waits
                 HomePageBanner homePageBanner; // The new HomePageBanner class
 
                 /// LET's redo the first banner test using the new HomePageBanner class
@@ -122,7 +120,7 @@ public class DemonstrateObjectModel02 {
                 // The 'section' is a complex element of tabs, images and text. We need to click
                 // on a list element to expand the corresponding tab.
                 // I use these sections as my key object to promote each book across each series
-                // (and so across multiple poages)
+                // (and so across multiple pages)
                 // same idea across multiple pages. These sections are ripe for abstraction into
                 // an element object to be embedded in
                 // page objects. But that's for another pass.
@@ -233,10 +231,10 @@ public class DemonstrateObjectModel02 {
                 assertTrue(pastSucksVideo.waitToLoad(), "Timed out waiting for the Past Sucks video to load.");
 
                 assertTrue(pastSucksVideo.playBigRed(), "Could not play video."); // Hit the big red play button
-                testSession.sleep(4);
+                TestSession.sleep(4);
                 pastSucksVideo.togglePlayButton(); // pause play
                 CaptureScreenshot.captureScreenshot(driver, "happyTour2", "tim_vid_screenshot_1");
-                testSession.sleep(4);
+                TestSession.sleep(4);
                 ; // If we have successfully paused, the video will not change and so the
                   // next
                   // screenshot should be the same as the last. We should see both have a
@@ -244,7 +242,7 @@ public class DemonstrateObjectModel02 {
                   // paused' two vertical bars at bottom left
                 CaptureScreenshot.captureScreenshot(driver, "happyTour2", "tim_vid_screenshot_2");
                 pastSucksVideo.togglePlayButton(); // restart the video
-                testSession.sleep(4); // Move further into the video
+                TestSession.sleep(4); // Move further into the video
 
                 assertTrue(pastSucksVideo.toggleMute(), "Failed to toggle mute button.");
                 CaptureScreenshot.captureScreenshot(driver, "happyTour2", "tim_vid_screenshot_3"); // should be
@@ -318,7 +316,7 @@ public class DemonstrateObjectModel02 {
                 System.out.println();
                 System.out.println("tab contents checked by calling the BookTab methods...");
                 System.out.println(("Current index & tab name: " + IndigoSquadTab.getSelectedTabIndex() + " | "
-                                + IndigoSquadTab.getSelectedTab()));
+                                + IndigoSquadTab.getSelectedTabText()));
                 System.out.println("Current tab text: " + IndigoSquadTab.getSelectedTabPanelText());
                 System.out.println();
                 assertTrue(IndigoSquadTab.selectTabByText("Links"),

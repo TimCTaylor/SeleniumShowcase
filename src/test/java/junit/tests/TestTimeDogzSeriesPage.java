@@ -2,20 +2,9 @@ package junit.tests;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import element.classes.HomePageBanner;
-import element.classes.YouTubeVideo;
-import element.classes.booktab.AmazonSalesLinks;
-import element.classes.booktab.BookTab;
 import page.classes.TimeDogzSeriesPage;
 import utils.*;
 
-import java.time.Duration;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.Constants.TIMEDOGZ_SERIES_URL;
 
@@ -80,16 +69,16 @@ public class TestTimeDogzSeriesPage {
         timeDogzSeriesPage.youTubeOpenForTesting(); // Switches us into the video iFrame
 
         assertTrue(timeDogzSeriesPage.youTubePlayBigRed(), "Could not play video."); // Hit the big red play button
-        testSession.sleep(4); // allow time for the video to start playing past the opening thumbnail
+        TestSession.sleep(4); // allow time for the video to start playing past the opening thumbnail
         assertTrue(timeDogzSeriesPage.youTubeTogglePlayPause(), "Failed to toggle play/pause button."); // pause play
         CaptureScreenshot.captureScreenshot(driver, "TimeDogzSeriesPage", "AuthorReading_1");
-        testSession.sleep(4);
+        TestSession.sleep(4);
 
         // If we have successfully paused, the video will not change and so the next screenshot should be the same as the last.
         // We should see both have a 'video paused' two vertical bars at bottom left
         CaptureScreenshot.captureScreenshot(driver, "TimeDogzSeriesPage", "AuthorReading_2");
         assertTrue(timeDogzSeriesPage.youTubeTogglePlayPause(), "Failed to toggle play/pause button."); // restart the video
-        testSession.sleep(4); // Move further into the video
+        TestSession.sleep(4); // Move further into the video
 
         assertTrue(timeDogzSeriesPage.youTubeToggleMute(), "Failed to toggle mute button.");
 
@@ -109,11 +98,9 @@ public class TestTimeDogzSeriesPage {
         timeDogzSeriesPage.youTubeCloseForTesting(); // skips back out of the iFrame
     }
 
-    @Test
-    public void testTimeDogzGetFreeBook() {
-        assertTrue(timeDogzSeriesPage.verifyGetFreeBook());
-    }
-
+    // This is a helper method to call a sequence of actions on each book. It's used in the next four tests.
+    // I could have written a single test and placed the contents of this method inside a loop, but this seemed
+    // the best blend of simplicity and test isolation.
     private void verifyBookDetails(int bookNumber) {
         assertTrue((timeDogzSeriesPage.moveToBookSection(1) != null),
                 "Could not find the book section for book" + bookNumber + ".");
@@ -125,12 +112,6 @@ public class TestTimeDogzSeriesPage {
         } else {
             assertTrue(timeDogzSeriesPage.verifyAmazonLink(bookNumber));
         }
-    }
-
-    @Test
-    public void findThePastSucks() {
-        assertTrue((timeDogzSeriesPage.moveToBookSection(1) != null), "Could not find The Past Sucks book section.");
-
     }
 
     @Test
@@ -157,5 +138,16 @@ public class TestTimeDogzSeriesPage {
     @Test
     public void testTimeDogzFooter() {
         assertTrue(timeDogzSeriesPage.verifyFooter()); // An example of a method inherited from the abstract page class
+    }
+
+    @Test
+    public void findThePastSucks() {
+        assertTrue((timeDogzSeriesPage.moveToBookSection(1) != null), "Could not find The Past Sucks book section.");
+
+    }
+
+    @Test
+    public void testTimeDogzGetFreeBook() {
+        assertTrue(timeDogzSeriesPage.verifyGetFreeBook());
     }
 }

@@ -85,9 +85,7 @@ public class DemonstrateObjectModel01 {
                                                        // it here.
                 WebElement homeBannerDiv; // Element for each banner div
                 WebElement firstAnchor; // First anchor found within a parent element
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit
-                                                                                       // waits
-                WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2)); // For briefer waits
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit waits
 
                 // LEGION BOOK SERIES BANNER TESTS
                 // -- In later iterations, we will abstract the banner elements and then

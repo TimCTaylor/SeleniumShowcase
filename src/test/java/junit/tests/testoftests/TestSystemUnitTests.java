@@ -29,9 +29,17 @@ public class TestSystemUnitTests {
         TestSession sessionObj = new TestSession();
         sessionObj.implicitWait(5); // we get socket exceptions if we move too fast, so wait a few seconds
         sessionObj.sessionDriver.get("https://humanlegion.com");
-        assertTrue(sessionObj.sessionDriver.toString().startsWith("ChromeDriver"),
-                "Test Session object should default to driver=CHROME");
-        assertFalse(sessionObj.forceErrors, "Test Session object should default to  force errors = FALSE");
+
+        String commandLineDriver = System.getProperty("driver");
+        if (commandLineDriver == null || commandLineDriver.isBlank()) { // Only check for driver default if we haven't set a driver on the command line
+            assertTrue(sessionObj.sessionDriver.toString().startsWith("ChromeDriver"),
+                    "Test Session object should default to driver=CHROME");
+        }
+
+        String forceErrors = System.getProperty("force_errors");
+        if (forceErrors == null || forceErrors.isBlank()) { // Only check for force errors default if we haven't set a value on the command line
+            assertFalse(sessionObj.forceErrors, "Test Session object should default to  force errors = FALSE");
+        }
         sessionObj.closeTestSession();
         try {
             Thread.sleep(2000);

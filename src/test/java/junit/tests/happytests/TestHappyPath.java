@@ -32,8 +32,6 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
-
 /**
  * The purpose of the tests in this class is to perform chains of interactions
  * with the human legion website that
@@ -72,7 +70,6 @@ public class TestHappyPath {
         Actions actions = new Actions(driver); // We will reuse the same Actions instance a few times, so let's declare
                                                // it here.
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(8)); // We'll use this for explicit waits
-        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2)); // For briefer waits
 
         // Mini design template: find the div, then find the element within the div.
         // This is a common pattern in Selenium tests and it's easy to miss the
