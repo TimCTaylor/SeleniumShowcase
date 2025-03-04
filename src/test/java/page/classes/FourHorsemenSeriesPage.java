@@ -25,22 +25,9 @@ package page.classes;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import element.classes.YouTubeVideo;
-import element.classes.booktab.AmazonSalesLinks;
-import element.classes.booktab.BookTab;
-import utils.VerifyLink;
-
-import java.util.List;
-
-import static utils.Constants.AVOID_OPENING_AMAZON_LINKS;
-
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class FourHorsemenSeriesPage extends HumanLegionPage {
     private Actions actions = new Actions(driver);;
@@ -51,27 +38,4 @@ public class FourHorsemenSeriesPage extends HumanLegionPage {
 
     }
 
-    // // Finds all amazon store links on the tab with name of @nameOfLinksTab and verifies they are working.
-    // // It uses @nameOfLinksTab to select the right tab (they don't all have the same name) and @bookTitle as the
-    // // name of the book, which it uses as part of the verification that the Amazon link sells the correct book.
-    // public boolean verifyAmazonLinks(BookTab bookTab, String nameOfLinksTab, String bookTitle) {
-    //     boolean retVal = false;
-    //     if (bookTab.selectTabByText(nameOfLinksTab)) { // There's a lot going on in the next two lines, but it's all abstracted away.
-    //         AmazonSalesLinks bookLinks = new AmazonSalesLinks(driver, bookTab.getSelectedTabPanel(), bookTitle);
-    //         retVal = bookLinks.verifyLinks();
-    //     }
-    //     return retVal;
-    // }
-
-    // public boolean selectTab(BookTab bookTab, String tabName) {
-    //     return bookTab.selectTabByText(tabName);
-    // }
-
-    // public String getPanelText(BookTab bookTab) {
-    //     return bookTab.getSelectedTabPanelText();
-    // }
-
-    // public int getTabCount(BookTab bookTab) {
-    //     return bookTab.getNumTabs();
-    // }
 }

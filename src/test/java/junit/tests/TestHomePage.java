@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
 import element.classes.HomePageBanner;
-import page.classes.FourHorsemenSeriesPage;
 import page.classes.HomePage;
 import utils.TestSession;
 

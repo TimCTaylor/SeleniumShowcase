@@ -30,11 +30,8 @@ package page.classes;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import element.classes.booktab.AmazonSalesLinks;
-import element.classes.booktab.BookTab;
 import java.time.Duration;
 
 public class LegionSeriesPage extends HumanLegionPage {
@@ -46,43 +43,4 @@ public class LegionSeriesPage extends HumanLegionPage {
 
     }
 
-    // Moved to the HumanLegionPage class.  Delete this once tested.
-    // // @bookTabId is the ID of the book tab container element (a <section> element).
-    // // We find the container, then instantiate a BookTab object to represent the book tab inside the container.
-    // // We return the BookTab object or null if anything went wrong.
-    // public BookTab getBookTab(String bookTabId) {
-    //     BookTab retVal = null;
-    //     WebElement bookTab = driver.findElement(By.id(bookTabId));
-    //     if (bookTab != null) {
-    //         actions.moveToElement(bookTab).perform();
-    //         wait.until(ExpectedConditions.visibilityOf(bookTab));
-    //         retVal = new BookTab(bookTabId, driver);
-    //     }
-    //     return retVal;
-    // }
-
-    // Moved to the HumanLegionPage class.  Delete this once tested.
-    // // Finds all amazon store links on the tab with name of @nameOfLinksTab and verifies they are working.
-    // // It uses @nameOfLinksTab to select the right tab (they don't all have the same name) and @bookTitle as the
-    // // name of the book, which it uses as part of the verification that the Amazon link sells the correct book.
-    // public boolean verifyAmazonLinks(BookTab bookTab, String nameOfLinksTab, String bookTitle) {
-    //     boolean retVal = false;
-    //     if (bookTab.selectTabByText(nameOfLinksTab)) { // There's a lot going on in the next two lines, but it's all abstracted away.
-    //         AmazonSalesLinks bookLinks = new AmazonSalesLinks(driver, bookTab.getSelectedTabPanel(), bookTitle);
-    //         retVal = bookLinks.verifyLinks();
-    //     }
-    //     return retVal;
-    // }
-
-    // public boolean selectTab(BookTab bookTab, String tabName) {
-    //     return bookTab.selectTabByText(tabName);
-    // }
-
-    // public String getPanelText(BookTab bookTab) {
-    //     return bookTab.getSelectedTabPanelText();
-    // }
-
-    // public int getTabCount(BookTab bookTab) {
-    //     return bookTab.getNumTabs();
-    // }
 }

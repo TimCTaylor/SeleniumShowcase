@@ -10,19 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import element.classes.HomePageBanner;
-import element.classes.YouTubeVideo;
-import element.classes.booktab.AmazonSalesLinks;
-import element.classes.booktab.BookTab;
-import utils.VerifyLink;
-
-import java.util.List;
-
-import static utils.Constants.AVOID_OPENING_AMAZON_LINKS;
-
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class HomePage extends HumanLegionPage {
     private Actions actions = new Actions(driver);;
