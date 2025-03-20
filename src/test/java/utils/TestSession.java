@@ -67,6 +67,11 @@ public class TestSession {
                 edgeOptions.addArguments("--disable-notifications"); // Added this line to disable notifications.
                 edgeOptions.addArguments("--disable-features=CookiePrompt"); // Add this line to disable cookie popup
                                                                              // when we open the browser.
+
+                // The next two lines are for headless mode, and I need to set them or the tests will fail when run from Jenkins.
+                //TODO: add a command line option to enable headless mode
+                edgeOptions.addArguments("--headless"); // Enable headless mode
+                edgeOptions.addArguments("--disable-gpu"); // Disable GPU acceleration                                                        
                 this.sessionDriver = new EdgeDriver(edgeOptions);
                 break;
             case "INTERNET_EXPLORER": // the call to the IEDriver will automatically load EdgeDriver in IE mode
