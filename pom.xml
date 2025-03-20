@@ -74,6 +74,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire.version}</version>
+                    <!-- Exclude the following because they won't run when called from Jenkins without extra work
+                         We still run these tests from the IDE, but not when running the mvn test phase -->
+                    <configuration>
+                       <excludedGroups>UnitTestTheTests</excludedGroups>
+                </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
