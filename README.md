@@ -1,6 +1,6 @@
 # Selenium Showcase
 
-[![Build Status](http://13.53.170.81:8080/buildStatus/icon?job=selenium-maven)](http://13.53.170.81:8080/job/selenium-maven/)  [This build badge is set automatically by my Jenkins CI/CD server job that's triggered with every commit]
+[![Build Status](http://13.53.170.81:8080/buildStatus/icon?job=selenium-maven)](http://13.53.170.81:8080/job/selenium-maven/)  [This build badge is set automatically by my Jenkins server. The CI/CD pipeline is triggered with every commit to this repo.]
 
 ## Introduction
 I've been learning Selenium and JavaSE and wanted to both deepen my understanding and showcase what I've learned by writing a test automation project for which the system under test was humanlegion.com, my own publishing website. It's been a lot of fun to write. In fact, it still is, as I'm actively extending this.
