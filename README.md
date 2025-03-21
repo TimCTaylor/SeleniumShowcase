@@ -24,13 +24,13 @@ Constructor overloading, abstract page class, encapsulation, abstraction, separa
 
 ## How to use
 The folder structure follows the Maven standard. 
-- Test code in general is: src\test\java 
-- Junit tests: src\test\java\junit\tests
-- Element abstraction layer: src\test\java\element\classes
-- Page object model classes: src\test\java\page\classes
-- Test Session class and other helper classes: src\test\utils
+- Test code in general is: src\test\java\com\humanlegion\pagetests
+- Element abstraction layer: src\test\java\com\humanlegion\elementabstractionlayer
+- Page object model classes: src\test\java\com\humanlegion\pageobjectmodel
+- Test Session class and other helper classes: src\test\java\com\humanlegion\utils
+- There's not a lot of interest at the moment in the following folders, but there will be soon: src\main\java\com\humanlegion\ && src\it
 
-Obviously, we can launch tests from the IDE. But from the junit folder, we can also run all tests or a selection of them from the command line. (See the utils.TestSession class for more command line options)
+Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tool, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup, we need to run Selenium tests in headless mode if we don't want to crash the Edge driver). 
 
 For example, to run all tests in the TestSystemUnitTests class with the Microsoft Edge driver:
 
