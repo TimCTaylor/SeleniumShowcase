@@ -1,3 +1,10 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "editor.defaultFormatter": "redhat.java",
+    "editor.wordWrapColumn": 125,
+    "maven.view": "hierarchical",
+    "java.configuration.runtimes": [
+        
+    ]
 }
