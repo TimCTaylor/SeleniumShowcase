@@ -1,4 +1,5 @@
 # Selenium Showcase
+[this line is a test to trigger the CI pipeline on Jenkins]
 
 ## Introduction
 I've been learning Selenium and JavaSE and wanted to both deepen my understanding and showcase what I've learned by writing a test automation project for which the system under test was humanlegion.com, my own publishing website. It's been a lot of fun to write. In fact, it still is, as I'm actively extending this.
