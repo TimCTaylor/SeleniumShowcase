@@ -30,7 +30,7 @@ The folder structure follows the Maven standard.
 - Test Session class and other helper classes: src\test\java\com\humanlegion\utils
 - There's not a lot of interest at the moment in the following folders, but there will be soon: src\main\java\com\humanlegion\ && src\it
 
-Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tools, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup -- a single built-in node on my AWS EC2 linux server), we need to run Selenium tests in headless mode if we don't want to crash the Edge driver).
+Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tools, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup -- a single built-in node on my AWS EC2 linux server -- we need to run Selenium tests in headless mode if we don't want to crash the Edge driver).
 
 For example, to run all tests in the TestSystemUnitTests class with the Microsoft Edge driver:
 
