@@ -30,7 +30,7 @@ The folder structure follows the Maven standard.
 - Test Session class and other helper classes: src\test\java\com\humanlegion\utils
 - There's not a lot of interest at the moment in the following folders, but there will be soon: src\main\java\com\humanlegion\ && src\it
 
-Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tool, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup, we need to run Selenium tests in headless mode if we don't want to crash the Edge driver). 
+Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tools, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup -- a single built-in node on my AWS EC2 linux server), we need to run Selenium tests in headless mode if we don't want to crash the Edge driver).
 
 For example, to run all tests in the TestSystemUnitTests class with the Microsoft Edge driver:
 
@@ -50,6 +50,7 @@ But I'm running Windows. If I were on Unix, I guess that would be
 mvn -Ddriver=CHROME test | grep -E "Running |Tests run"
 ```
 
+> [!NOTE]
 > **You can pick any Selenium driver you like... so long as it's Chrome or Edge.**
 > Yeah, about that. The code's in the TestSession class to handle all the drivers, but it's commented out other than for Chrome and Edge. The reason is simply that I don't have enough space on my main drive to download any more drivers.
 > Seriously. I've put the drivers themselves on my D: drive and changed the Maven setting.xml to put everything I can onto D:, but the footprint on C: is still high. Maybe it's time I bought a new computer?
