@@ -1,5 +1,5 @@
-package com.humanlegion.bob;
-import java.String;
+
+package com.humanlegion;
 
 public class Bob {
     private static final String LOFTY_MESSAGE = "Err, yes, I think so, Bob.";

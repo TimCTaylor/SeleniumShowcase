@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.humanlegion</groupId>
+  <artifactId>HumanLegionAutomation</artifactId>
+  <versioning>
+    <lastUpdated>20250322184439</lastUpdated>
+    <snapshot>
+      <timestamp>20250322.184439</timestamp>
+      <buildNumber>3</buildNumber>
+    </snapshot>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0-20250322.184439-3</value>
+        <updated>20250322184439</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>2.0-20250322.184439-3</value>
+        <updated>20250322184439</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+  <version>2.0-SNAPSHOT</version>
+</metadata>

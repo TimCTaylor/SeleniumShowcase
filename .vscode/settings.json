@@ -6,5 +6,10 @@
     "maven.view": "hierarchical",
     "java.configuration.runtimes": [
         
-    ]
+    ],
+    "java.project.sourcePaths": [
+        "src/main/java/com/humanlegion/bob",
+        "src/main/java/com/humanlegion"
+    ],
+    "java.project.explorer.showNonJavaResources": false
 }
