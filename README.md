@@ -1,5 +1,7 @@
 # Selenium Showcase
 
+[![Build Status](http://13.53.170.81:8080/buildStatus/icon?job=selenium-maven)](http://13.53.170.81:8080/job/selenium-maven/)  [This build badge is set automatically by my Jenkins server. The CI/CD pipeline is triggered with every commit to this repo.]
+
 ## Introduction
 I've been learning Selenium and JavaSE and wanted to both deepen my understanding and showcase what I've learned by writing a test automation project for which the system under test was humanlegion.com, my own publishing website. It's been a lot of fun to write. In fact, it still is, as I'm actively extending this.
 
@@ -22,13 +24,13 @@ Constructor overloading, abstract page class, encapsulation, abstraction, separa
 
 ## How to use
 The folder structure follows the Maven standard. 
-- Test code in general is: src\test\java 
-- Junit tests: src\test\java\junit\tests
-- Element abstraction layer: src\test\java\element\classes
-- Page object model classes: src\test\java\page\classes
-- Test Session class and other helper classes: src\test\utils
+- Test code in general is: src\test\java\com\humanlegion\pagetests
+- Element abstraction layer: src\test\java\com\humanlegion\elementabstractionlayer
+- Page object model classes: src\test\java\com\humanlegion\pageobjectmodel
+- Test Session class and other helper classes: src\test\java\com\humanlegion\utils
+- There's not a lot of interest at the moment in the following folders, but there will be soon: src\main\java\com\humanlegion\ && src\it
 
-Obviously, we can launch tests from the IDE. But from the junit folder, we can also run all tests or a selection of them from the command line. (See the utils.TestSession class for more command line options)
+Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tools, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup -- a single built-in node on my AWS EC2 linux server -- we need to run Selenium tests in headless mode if we don't want to crash the Edge driver).
 
 For example, to run all tests in the TestSystemUnitTests class with the Microsoft Edge driver:
 
@@ -48,6 +50,7 @@ But I'm running Windows. If I were on Unix, I guess that would be
 mvn -Ddriver=CHROME test | grep -E "Running |Tests run"
 ```
 
+> [!NOTE]
 > **You can pick any Selenium driver you like... so long as it's Chrome or Edge.**
 > Yeah, about that. The code's in the TestSession class to handle all the drivers, but it's commented out other than for Chrome and Edge. The reason is simply that I don't have enough space on my main drive to download any more drivers.
 > Seriously. I've put the drivers themselves on my D: drive and changed the Maven setting.xml to put everything I can onto D:, but the footprint on C: is still high. Maybe it's time I bought a new computer?
