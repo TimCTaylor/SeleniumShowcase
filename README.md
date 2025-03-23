@@ -38,13 +38,13 @@ There's a team size of one, but I still need to plan all my work and pull active
 - Skills learning.
 - CV updates and job applications
 
-[![My Kanban board: click thumbnail to expand](Documentation\Resources\Phase2_Kanban_Jira_thumb.jpg)](Documentation\Resources\Phase2_Kanban_Jira.jpg)
+[![My Kanban board: click thumbnail to expand](/Documentation/Resources/Phase2_Kanban_Jira_thumb.jpg)](Documentation/Resources/Phase2_Kanban_Jira.jpg)
 [My Kanban board: click thumbnail to expand]
 
 When I'm ready, I make Jira releases that match the GitHub repo releases.
 Then I return to my Confluence documentation spaces, and especially my planning whiteboad, to consider backlog updates for the next phases.
 
-[![My Confluence white board: click thumbnail to expand](Documentation\Resources\Phase2_Planning_Whiteboard_Confluence_thumb.jpg)](Documentation\Resources\Phase2_Planning_Whiteboard_Confluence.jpg)
+[![My Confluence white board: click thumbnail to expand](Documentation/Resources/Phase2_Planning_Whiteboard_Confluence_thumb.jpg)](Documentation/Resources/Phase2_Planning_Whiteboard_Confluence.jpg)
 [My Confluence planning white board: click thumbnail to expand]
 
 ## How to use
