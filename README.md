@@ -1,6 +1,6 @@
 # Selenium Showcase
 
-[![Build Status](http://13.53.170.81:8080/buildStatus/icon?job=selenium-maven)](http://13.53.170.81:8080/job/selenium-maven/)  [This build badge is set automatically by my Jenkins server. The CI/CD pipeline is triggered with every commit to this repo.]
+[![Build Status](http://13.49.70.13:8080/buildStatus/icon?job=selenium-maven)](http://13.49.70.13:8080/job/selenium-maven/)  [This build badge is set automatically by my Jenkins server. The CI/CD pipeline is triggered with every commit to this repo.]
 
 ## Introduction
 I've been learning Selenium and JavaSE and wanted to both deepen my understanding and showcase what I've learned by writing a test automation project for which the system under test was humanlegion.com, my own publishing website. It's been a lot of fun to write. In fact, it still is, as I'm actively extending this.
@@ -27,7 +27,7 @@ I've implemented a simple CI/CD pipeline. Commits to the GitHub trunk trigger a 
 
 The CD part of the CI/CD is trivial for this project, but if I added an 'mvn deploy' shell command to the script, then we would jar up the classes, deploy to the Maven repository, deploy to the deployment test environment (just a local folder), and run (trivial) integration tests, just to illustrate how we can slot all these things into the pipeline to work according to our needs.
 
-I've implemented Jenkins pipelines as a local Window service, on my AWS EC2 Ubuntu server, and in Docker Desktop for Windows. Docker's great – no need for all that configuration, just grab the image and go – but the WSL 2 subsystem overwhelmed my system drive and so it had to go. 
+I've implemented Jenkins pipelines as a local Window service, on my AWS EC2 Ubuntu server, and in Docker Desktop for Windows. Docker's great – no need for all that configuration, just grab the image and go – but the WSL 2 subsystem overwhelmed my system drive and so it had to go (for now... Docker will return). 
 
 Next steps with Jenkins: reconfigure WSL 2 and try again, run Docker in Linux, and add another command line option to my Maven test invocation to tell it to run Selenium tests in headless mode, which I need so I can run the tests automatically on Linux but default to showing the UI for environments where that is appropriate.
 
@@ -48,12 +48,12 @@ Then I return to my Confluence documentation spaces, and especially my planning 
 [My Confluence planning white board: click thumbnail to expand]
 
 ## How to use
-The folder structure follows the Maven standard. 
+The folder structure mostly follows the Maven standard. 
 - Test code in general is: src\test\java\com\humanlegion\pagetests
 - Element abstraction layer: src\test\java\com\humanlegion\elementabstractionlayer
 - Page object model classes: src\test\java\com\humanlegion\pageobjectmodel
 - Test Session class and other helper classes: src\test\java\com\humanlegion\utils
-- There's not a lot of interest at the moment in the following folders, but there will be soon: src\main\java\com\humanlegion\ && src\it
+- There's not a lot of interest at the moment in the following folders, but there will be soon: src\main\java\com\humanlegion\ and src\test\java\com\humanlegion\integrationtests
 
 Obviously, we can launch tests from the IDE, but we can also run tests from the command line using the Maven Surefire plugin, or run them through other tools, such as the CI/CD pipeline I have running on Jenkins (though with my simple Jenkins setup -- a single built-in node on my AWS EC2 linux server -- we need to run Selenium tests in headless mode if we don't want to crash the Edge driver).
 
@@ -79,19 +79,19 @@ mvn -Ddriver=CHROME test | grep -E "Running |Tests run"
 
 Test classification at a conceptual level is very useful, but it can get confusing when you get down into the reeds of practical details. Our project is written using Maven, a plugin pipeline tool that uses convention to subtly encourage its users through a standard production lifecycle (though is actually extremely configurable). 
 
-I decided to follow standard Maven convention, which means I'm running the Selenium tests of the website in the Maven test phase, by which Maven means *unit tests*. While there are a few unit tests of the test code itself, the tests of the website are system tests. If they were unit tests, then there would be a tight mapping between the tests in src/tests/java  and classes being tested in src/main/java.
+I decided to follow standard Maven convention, which means I'm running the Selenium tests of the website in the Maven test phase, by which Maven means *unit tests*. While there are a few unit tests of the test code itself, the tests of the website are system tests. If they were unit tests, then there would be a tight mapping between the tests in src/tests/java and classes being tested in src/main/java.
 
 The JUnit Selenium tests are being run through the Maven Surefire plugin. 
 I've also written integration tests that I run through the Maven Failsafe plugin, which is almost the same as Surefire with the exception that Surefire will abort the build lifecycle if tests fail, but Failsafe will continue so that it guarantees to run its post-test teardown phase.
 
-The integration tests in my case are pretty meaningless except, possibly, to hardcore Bob the Builder fans. The tests are just an example of how we can slot the tests we need at the points we need them in the CI/CD pipeline.
+The integration tests in my case are pretty meaningless except, possibly, to hardcore Bob the Builder fans. The tests are just an example of how we can slot the tests we need into the points we need them in the CI/CD pipeline.
 The lifecycle and the tools used are highly configurable and ultimately, between a Jenkins pipeline script that can shell out run any batch file or Bash script, and the pom.xml file that drives Maven, we have a lot of scope for automatically defining our own test approach, with pre- and post- steps for setup and teardown.
 
 For what it's worth, we can run just the integration tests like this (but only because there is no pre- and post- setup stage in my case):
 ```
 mvn clean test-compile failsafe:integration-test
 ```
-And we can invoke the entire Maven default lifecycle by specifying the final phase in the lifecycle, which causes all the previous ones to run. The integration, deployment, and installation phases all do a little something, though mostly using the package build from src/main/java rather than anything to do with www.humanlegion.com :
+And we can invoke the entire Maven default lifecycle by specifying the final phase in the lifecycle, which causes all the previous ones to run. The integration, deployment, and installation phases all do a little something, though mostly using the package build from src/main/java rather than anything to do with humanlegion.com :
 ```
 mvn deploy
 ```
