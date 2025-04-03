@@ -12,10 +12,11 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <selenium.version>4.28.1</selenium.version>
-        <junit.version>5.11.2</junit.version>
-        <surefire.version>3.5.1</surefire.version>
-        <failsafe.version>3.5.2</failsafe.version>
+        <selenium.version>4.30.0</selenium.version>
+        <selenium-devtools.version>4.28.1</selenium-devtools.version>
+        <junit.version>5.12.1</junit.version>
+        <surefire.version>3.5.3</surefire.version>
+        <failsafe.version>3.5.3</failsafe.version>
     </properties>
 
     <dependencies>
@@ -31,7 +32,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-devtools-v130</artifactId>
-            <version>${selenium.version}</version>
+            <version>${selenium-devtools.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
         <dependency>
