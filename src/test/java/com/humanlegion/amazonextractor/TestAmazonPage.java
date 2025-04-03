@@ -45,7 +45,7 @@ public class TestAmazonPage {
     @AfterAll
     public static void testTeardown() {
         testSession.closeTestSession();
-    }
+    } 
 
     @Test
     public void testHomePageFooter() {
