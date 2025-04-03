@@ -15,6 +15,7 @@ com\humanlegion\pagetests\TestHomePage.class
 com\humanlegion\pageobjectmodel\LegionSeriesPage.class
 com\humanlegion\sandbox\Sandbox2.class
 com\humanlegion\pagetests\TestLegionSeriesPage.class
+com\humanlegion\amazonextractor\TestAmazonPage.class
 com\humanlegion\pagetests\TestTimeDogzSeriesPage.class
 com\humanlegion\elementabstractionlayer\YouTubeVideo.class
 com\humanlegion\pagetests\Test4HUSeriesPage.class
