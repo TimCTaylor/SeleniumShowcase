@@ -1,0 +1,1 @@
+I moved the integration tests to src/test/java
